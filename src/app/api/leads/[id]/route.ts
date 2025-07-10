@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma"; // Adjust to your prisma client
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Record<string, string> }
 ) {
   try {
     const id = params.id;

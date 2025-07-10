@@ -265,7 +265,7 @@ export default function AddLeadModal({
                   ]}
                 >
                   <Input.TextArea
-                    prefix={<HomeOutlined />}
+                    // prefix={<HomeOutlined />}
                     placeholder="Street, City, State, ZIP"
                     autoSize={{ minRows: 2, maxRows: 4 }}
                     className="rounded-lg"

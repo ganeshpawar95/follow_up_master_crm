@@ -3,10 +3,10 @@ import prisma from "@/lib/prisma"; // Adjust to your prisma client
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Record<string, string> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ error: "Missing lead ID" }, { status: 400 });
     }
@@ -39,7 +39,7 @@ export async function PUT(
         nextReminder: nextReminder,
         leadSource: data.leadSource,
         leadType: data.leadType,
-        status: data.status,
+        // status: data.status, // Removed because 'status' is not a valid property for update
         // assignedToId: data.assignedToId,
         // createdById: data.createdById,
       },
@@ -56,15 +56,15 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ error: "Missing lead ID" }, { status: 400 });
     }
-    await prisma.lead.delete({ where: { id: params.id } });
+    await prisma.lead.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error("DELETE /api/leads/[id] error:", error);

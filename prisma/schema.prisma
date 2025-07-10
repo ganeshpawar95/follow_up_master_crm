@@ -1,0 +1,107 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  hashedPassword String
+  role           Role      @default(AGENT)
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  leads          Lead[]    @relation("AssignedLeads")
+  createdLeads   Lead[]    @relation("CreatedLeads")
+  conversations  Conversation[]
+  reminders      Reminder[]
+  notifications  Notification[]
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  AGENT
+}
+
+model Lead {
+  id             String   @id @default(uuid())
+  name           String
+  phone          String
+  email          String
+  address        String
+  nextReminder   DateTime
+  leadSource     String
+  leadType       String
+  status String @default("New")
+  assignedTo  User?          @relation("AssignedLeads", fields: [assignedToId], references: [id])
+  assignedToId String?
+  createdBy   User?          @relation("CreatedLeads", fields: [createdById], references: [id])
+  createdById String?
+  conversations Conversation[]
+  reminders   Reminder[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+enum LeadStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
+  LOST
+}
+
+model Conversation {
+  id        String   @id @default(uuid())
+  lead      Lead     @relation(fields: [leadId], references: [id])
+  leadId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  message   String
+  attachments Json    @default("[]")
+  createdAt DateTime @default(now())
+}
+
+model Reminder {
+  id          String   @id @default(uuid())
+  lead        Lead     @relation(fields: [leadId], references: [id])
+  leadId      String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  title       String
+  description String?
+  dueDateTime DateTime
+  repeat      RepeatType @default(NONE)
+  status      ReminderStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum RepeatType {
+  NONE
+  DAILY
+  WEEKLY
+  CUSTOM
+}
+
+enum ReminderStatus {
+  PENDING
+  COMPLETED
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  title      String
+  message    String
+  targetLink String?
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}

@@ -92,8 +92,7 @@ export default function AddLeadModal({
             layout="vertical"
             name="add_lead_form"
             initialValues={{
-              status: "Active",
-              lead_type: "New",
+              status: "New",
               assigned_agent: "Admin",
             }}
           >
@@ -159,7 +158,7 @@ export default function AddLeadModal({
               <Col span={12}>
                 <Form.Item
                   name="nextReminder"
-                  label={<span className="font-medium">Next Reminder</span>}
+                  label={<span className="font-medium">Follow-up Date</span>}
                   rules={[{ required: true, message: "Please select a date" }]}
                 >
                   <DatePicker
@@ -175,9 +174,12 @@ export default function AddLeadModal({
               <Col span={12}>
                 <Form.Item
                   name="leadSource"
-                  label={<span className="font-medium">Lead Source</span>}
+                  label={<span className="font-medium">Source</span>}
                   rules={[
-                    { required: true, message: "Please enter the lead source" },
+                    {
+                      required: false,
+                      message: "Please enter the source",
+                    },
                   ]}
                 >
                   <Input
@@ -188,37 +190,13 @@ export default function AddLeadModal({
                   />
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="leadType"
-                  label={<span className="font-medium">Lead Type</span>}
-                  rules={[
-                    { required: true, message: "Please select lead type" },
-                  ]}
-                >
-                  <Select
-                    size="large"
-                    placeholder="Select type"
-                    suffixIcon={<TagsOutlined />}
-                    className="rounded-lg"
-                  >
-                    <Option value="School">School</Option>
-                    <Option value="College">College</Option>
-                    <Option value="Bank">Bank</Option>
-                    <Option value="Hospital">Hospital</Option>
-                    <Option value="Corporate">Corporate</Option>
-                    <Option value="Retail">Retail</Option>
-                    <Option value="Other">Other</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
 
               <Col span={12}>
                 <Form.Item
                   name="assignedToId"
                   label={<span className="font-medium">Assigned Agent</span>}
                   rules={[
-                    { required: true, message: "Please select an agent" },
+                    { required: false, message: "Please select an agent" },
                   ]}
                 >
                   <Select
@@ -236,22 +214,20 @@ export default function AddLeadModal({
               <Col span={12}>
                 <Form.Item
                   name="status"
-                  label={<span className="font-medium">Lead Status</span>}
-                  rules={[
-                    { required: true, message: "Please select lead status" },
-                  ]}
+                  label={<span className="font-medium">Stage</span>}
+                  rules={[{ required: false, message: "Please select  stage" }]}
                 >
                   <Select
                     size="large"
-                    placeholder="Select status"
+                    placeholder="Select Stage"
                     suffixIcon={<TagsOutlined />}
                     className="rounded-lg"
                   >
                     <Option value="New">New</Option>
-                    <Option value="In Progress">In Progress</Option>
-                    <Option value="Completed">Completed</Option>
-                    <Option value="On Hold">On Hold</Option>
-                    <Option value="Cancelled">Cancelled</Option>
+                    <Option value="Contacted">Contacted</Option>
+                    <Option value="Interested">Interested</Option>
+                    <Option value="Demo">Demo</Option>
+                    <Option value="Converted">Converted</Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -261,7 +237,7 @@ export default function AddLeadModal({
                   name="address"
                   label={<span className="font-medium">Address</span>}
                   rules={[
-                    { required: true, message: "Please enter the address" },
+                    { required: false, message: "Please enter the address" },
                   ]}
                 >
                   <Input.TextArea

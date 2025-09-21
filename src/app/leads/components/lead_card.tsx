@@ -54,15 +54,15 @@ export default function LeadCard({
           {lead.assigned_agent_name}
         </div>
         <div>
-          <span className="font-medium text-gray-400">Lead Source:</span>{" "}
+          <span className="font-medium text-gray-400">Source:</span>{" "}
           {lead.leadSource}
         </div>
-        <div>
+        {/* <div>
           <span className="font-medium text-gray-400">Lead Type:</span>{" "}
           {lead.leadType}
-        </div>
+        </div> */}
         <div>
-          <span className="font-medium text-gray-400">Next Reminder:</span>{" "}
+          <span className="font-medium text-gray-400">Follow-up Date:</span>{" "}
           {lead.nextReminder
             ? new Date(lead.nextReminder).toLocaleDateString()
             : ""}
